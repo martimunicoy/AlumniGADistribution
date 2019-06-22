@@ -1,5 +1,8 @@
 import argparse
 
+from Utils.AlumniParser import AlumniParser
+from Utils.Classroom import ClassDistribution, conditionBuilder
+
 
 def parseArguments():
     parser = argparse.ArgumentParser()
@@ -16,14 +19,30 @@ def parseArguments():
 def main():
     path_to_input_file = parseArguments()
 
-    inputFileParser = InputFileParser(path_to_input_file)
-    settings = inputFileParser.createSettings()
+    parser = AlumniParser(path_to_input_file)
+    alumni = parser.getAlumni()
 
-    commandsBuilder = CommandsBuilder(settings)
-    commands = commandsBuilder.createCommands()
+    #for alumnus in alumni:
+        #print(alumnus)
 
-    for command in commands:
-        command.run()
+    classDistribution = ClassDistribution(alumni, ['3r A', '3r B'], seed=1)
+    c1 = conditionBuilder("SPLITTED", alumni[1], alumni[2])
+    c2 = conditionBuilder("SPLITTED", alumni[3], alumni[4])
+    c3 = conditionBuilder("SPLITTED", alumni[1], alumni[5])
+    c4 = conditionBuilder("TOGETHER", alumni[1], alumni[6])
+    classDistribution.addCondition(c1)
+    classDistribution.addCondition(c2)
+    classDistribution.addCondition(c3)
+    classDistribution.addCondition(c4)
+    print(c1)
+    print(c2)
+    print(c3)
+    print(c4)
+
+    classrooms = classDistribution.distributeAlumni()
+
+    for classroom in classrooms:
+        print(classroom)
 
 
 if __name__ == '__main__':

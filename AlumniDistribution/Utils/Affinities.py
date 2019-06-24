@@ -8,6 +8,7 @@ class Affinity(object):
                             "{}".format(affinity_type))
         self._type = affinity_type
         self._priority = {}
+        self._weigth = co.AFFINITY_WEIGTHS[affinity_type.upper()]
 
     @property
     def type(self):
@@ -16,6 +17,21 @@ class Affinity(object):
     @property
     def priority(self):
         return self._priority
+
+    @property
+    def weigth(self):
+        return self._weigth
+
+    def __iter__(self):
+        self.__current = 0
+        return self
+
+    def __next__(self):
+        if (self.__current == len(self.priority)):
+            raise StopIteration
+        else:
+            self.__current += 1
+            return list(self.priority.items())[self.__current - 1]
 
     def __str__(self):
         output = "{}: ".format(self.type)
@@ -30,7 +46,7 @@ class Affinity(object):
             priority_number = int(priority_number)
             value = str(value)
         except TypeError:
-            raise TypeError("Parametres de prioritat incorrectes")
+            raise TypeError("Paràmetres de prioritat incorrectes")
 
         self._priority[priority_number] = value
 

@@ -22,9 +22,9 @@ class AlumniParser(object):
             if (field.upper() in co.FIELDS):
                 ordered_fields.append(field)
                 continue
-            raise NameError("Un dels camps del fitxer csv es " +
+            raise NameError("Un dels camps del fitxer csv és " +
                             "desconegut: \'" + field +
-                            "\'. Els camps coneguts son: " +
+                            "\'. Els camps coneguts són: " +
                             str(co.FIELDS))
 
         return ordered_fields
@@ -50,7 +50,7 @@ class AlumniParser(object):
                     alumnus = alumnus_builder.build(field_values)
                     alumni.append(alumnus)
                 else:
-                    print("Atencio: ignorant linia amb un format inconsistent")
+                    print("Atenció: ignorant línia amb un format inconsistent")
                     print(" \'" + line + "\'")
 
         return alumni

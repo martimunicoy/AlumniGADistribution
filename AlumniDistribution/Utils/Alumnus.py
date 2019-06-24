@@ -44,7 +44,7 @@ class Alumnus(object):
     def setClassroom(self, classroom):
         self._classroom = classroom
 
-    def unsetClassroom(self, classroom):
+    def unsetClassroom(self):
         self._classroom = None
 
     def hasAClassroomAssigned(self):
@@ -74,8 +74,8 @@ class AlumnusBuilder(object):
     def build(self, field_values):
         okay = self.checkFieldValues(field_values)
         if (not okay):
-            raise NameError("El numero de camps de la taula no coincideix " +
-                            "amb la linia de l\'arxiu csv: " +
+            raise NameError("El número de camps de la taula no coincideix " +
+                            "amb la línia de l\'arxiu csv: " +
                             str(field_values))
 
         # Get name and remove it from field_values list
@@ -86,7 +86,7 @@ class AlumnusBuilder(object):
                 del(field_values[i])
                 break
         else:
-            raise NameError("El camp \'Nom\' es obligatori a la taula de "
+            raise NameError("El camp \'Nom\' és obligatori a la taula de "
                             "l\'arxiu csv. Camps llegits: " +
                             str(self.fields))
 

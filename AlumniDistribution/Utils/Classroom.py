@@ -75,6 +75,17 @@ class ClassDistribution(object):
     def removeConditions(self, conditions):
         self._conditions = []
 
+    def _getBestClassroom(self, classrooms):
+        random.shuffle(classrooms)
+
+        best_one = classrooms[0]
+
+        for classroom in classrooms[1:]:
+            if (len(classroom.alumni) < len(best_one.alumni)):
+                best_one = classroom
+
+        return best_one
+
     def distributeAlumni(self):
         # Unset classroom for all alumni
         for alumnus in self.alumni:
@@ -84,9 +95,6 @@ class ClassDistribution(object):
         classrooms = []
         for name in self.classroom_names:
             classrooms.append(Classroom(name))
-
-        # Get number of classrooms
-        n_classrooms = len(classrooms)
 
         # First, apply conditions
         if (self.verbose):
@@ -104,12 +112,10 @@ class ClassDistribution(object):
         # Randomly shuffle them
         random.shuffle(alumni_not_assigned_yet)
 
-        alumni_divisions = [alumni_not_assigned_yet[i::n_classrooms]
-                            for i in range(n_classrooms)]
-
-        for alumni_division, classroom in zip(alumni_divisions, classrooms):
-            for alumnus in alumni_division:
-                classroom.addAlumnus(alumnus)
+        # Add alumnus to the best classroom (the most empty or a random one)
+        for alumnus_not_assigned_yet in alumni_not_assigned_yet:
+            classroom = self._getBestClassroom(classrooms)
+            classroom.addAlumnus(alumnus_not_assigned_yet)
 
         return classrooms
 

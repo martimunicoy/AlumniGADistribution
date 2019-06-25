@@ -1,3 +1,5 @@
+from . import Constants as co
+
 
 class Score(object):
     def __init__(self, score_value):
@@ -36,10 +38,21 @@ class ScoreCalculator(object):
 
     def getAlumnusScore(self, alumnus):
         score = 0.
+        all_matches = 0
+        positive_matches = 0
         for affinity in alumnus.affinity_data:
             for priority, mate_name in affinity:
                 if (self.classroom.containsName(mate_name)):
-                    score += float(affinity.weigth) / float(priority)
+                    if (affinity.weigth > 0):
+                        positive_matches += 1
+                    all_matches += 1
+                    score += float(affinity.weigth) / (float(priority) * 0.5)
+
+        if (all_matches == 0):
+            return score
+
+        score /= all_matches
+        score -= co.MATCH_EQUILIBRIUM_WEIGTH / pow(positive_matches + 1, 2)
 
         return score
 
@@ -52,10 +65,11 @@ class ScoreCalculator(object):
             print(" - {}: {}".format(alumnus.name, score))
         print(" - Total score: {}".format(self.getClassroomResult()))
 
-
     def getClassroomResult(self):
         total_score = 0.
         for score in self.results.values():
             total_score += score
+
+        total_score /= len(self.results.values())
 
         return total_score

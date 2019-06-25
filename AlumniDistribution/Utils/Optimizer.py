@@ -53,13 +53,12 @@ class BruteForceOptimizer(Optimizer):
 
             if (self.best_score is None or self.best_score < total_score):
                 if (self.best_score is None):
-                    print(" - Iteració {: 6d}: ".format(iteration) +
+                    print(" - Iteració {:6d}: ".format(iteration) +
                           "            {: 8.2f}".format(total_score))
                 else:
-                    print(" - Iteració {: 6d}: ".format(iteration) +
+                    print(" - Iteració {:6d}: ".format(iteration) +
                           "{: 8.2f} -> {: 8.2f}".format(self.best_score,
                                                         total_score))
-
 
                 self._best_score = total_score
                 self._best_classrooms = classrooms
